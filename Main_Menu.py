@@ -242,6 +242,7 @@ st.pyplot(plt)
 
 # Orginal datasetni o'zgaruvchiga yuklab olamiz
 original_data = pd.read_csv('Academic_Success.csv', index_col=0)
+original_data = original_data.sample(15000)
 
 # Eski tozalanmagan ma'lumotlar va tozalangan ma'lumotlarni solishitiramiz
 if st.button('(D) Statistics of old data with NaN values vs cleaned cata :large_blue_diamond:'):
