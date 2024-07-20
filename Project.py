@@ -9,16 +9,22 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import json
 
-# Load the data
+# Accademic succes - loyihamizni boshlaymiz
+st.set_page_config(
+    page_title="Accademic Success",
+    page_icon=":dart:",
+    layout="wide",
+    initial_sidebar_state="expanded")
+
 file_path = 'cleaned_data.csv'
 data = pd.read_csv(file_path, index_col=0)
 
-st.header('Academic Success', divider=True)
+st.header('Academic Success :mortar_board:', divider=True)
 st.header('Dataset overview')
 
-# Sidebar Elements
 st.sidebar.header("Dashboard Controls")
 
+# Filterlar uchun alohida funksiya yozib olamiz
 def filter_data(data):
     """Apply filters based on sidebar selections and return filtered data."""
     if 'Nationality' in data.columns:
@@ -48,48 +54,40 @@ def filter_data(data):
 
     return data
 
-# Apply Filters
 filtered_data = filter_data(data)
 
-# Define metrics
 total_students = len(filtered_data)
 male_students = len(filtered_data[filtered_data['Gender'] == 'male'])
 female_students = len(filtered_data[filtered_data['Gender'] == 'female'])
 average_age = filtered_data['Age at enrollment'].mean()
 
 data
-# Create two columns for layout
+
 c1, c2, c3 = st.columns([1, 2, 1])
-col1, col2 = st.columns([5, 10])  # Adjust column widths
+col1, col2 = st.columns([5, 10])  
 with c1:
     fig_d_or_e = px.pie(filtered_data, names='Daytime/evening attendance', 
                         title='Daytime/evening attendance',
-                        hole=0,
-                        color_discrete_sequence=['yellow', 'black'])
-    fig_d_or_e.update_layout(width=650, height=400)  # Set chart size and margins
+                        color_discrete_sequence=['yellow', 'green'])
+    fig_d_or_e.update_layout(width=650, height=400)  
     st.plotly_chart(fig_d_or_e)
 
 with c2:
-    # Pie chart for Gender Distribution
     fig_gender = px.pie(filtered_data, names='Target', 
                         title='Target',
-                        hole=0,
                         color_discrete_sequence=['Red', 'Black', 'Lightblue'])
-    fig_gender.update_layout(width=650, height=400)  # Set chart size and margins
+    fig_gender.update_layout(width=650, height=400) 
     st.plotly_chart(fig_gender)
 
 with c3:
     fig_gender = px.pie(filtered_data, names='Gender', 
                         title='Gender Distribution',
-                        hole=0.4,
                         color_discrete_sequence=['Red', 'green'])
-    fig_gender.update_layout(width=650, height=400)  # Set chart size and margins
+    fig_gender.update_layout(width=650, height=400) 
     st.plotly_chart(fig_gender)
 
 
-# Bar chart for Marital Status
 with col1:
-    # Display Metrics
     st.metric(label="Total Students", value=total_students)
     st.metric(label="Male Students", value=male_students)
     st.metric(label="Female Students", value=female_students)
@@ -105,18 +103,16 @@ with col2:
     )
     fig_scholarship.update_layout(
         xaxis_title='Course',
-        xaxis_tickangle=-45,  # Rotate x-axis labels to -45 degrees
-        width=1000, height=490  # Set chart size
+        xaxis_tickangle=-45,  
+        width=1000, height=490  
     )
     st.plotly_chart(fig_scholarship)
-image_url = 'https://get.wallhere.com/photo/1920x1080-px-flag-Portugal-1401747.jpg'
 
-# Display the image
-st.image(image_url, caption='Your Image Caption', use_column_width=True)
+# image_url = 'https://get.wallhere.com/photo/1920x1080-px-flag-Portugal-1401747.jpg'
 
+# # Display the image
+# st.image(image_url, caption='Your Image Caption', use_column_width=True)
 
-
-# Example dictionary mapping nationalities to countries
 nationality_to_country = {
     'Portuguese': 'Portugal',
     'Santomean': 'São Tomé and Príncipe',
@@ -136,20 +132,16 @@ nationality_to_country = {
     'Colombian': 'Colombia'
 }
 
-# Create a new column 'Country' based on the 'Nationality' column
 filtered_data['Country'] = filtered_data['Nationality'].map(nationality_to_country)
 
-# Load GeoJSON file for country boundaries
 geojson_file = 'countries.geo.json'
 with open(geojson_file) as f:
     geojson_data = json.load(f)
 
-# Prepare data for Choropleth
 data_map = filtered_data['Country'].value_counts().reset_index()
 data_map.columns = ['Country', 'Count']
-data_map['Count'] = data_map['Count'].astype(int)  # Convert int64 to int for JSON serialization
+data_map['Count'] = data_map['Count'].astype(int) 
 
-# Define coordinates for the center of each country
 country_coords = {
     'Portugal': [39.3999, -8.2245],
     'São Tomé and Príncipe': [0.1864, 6.6131],
@@ -169,7 +161,6 @@ country_coords = {
     'Colombia': [4.5709, -74.2973]
 }
 
-# Create and customize the map
 def create_map(data_map, geojson_data):
     m = folium.Map(
         location=[20, 0], 
@@ -177,9 +168,9 @@ def create_map(data_map, geojson_data):
         max_zoom=20, 
         min_zoom=2, 
         scrollWheelZoom=True,
-        maxBounds=[[-60, -180], [85, 180]],  # South-West and North-East corners
-        tiles='cartodb positron',
-        attr='Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
+        maxBounds=[[-75, -200], [100, 200]], 
+        # tiles='cartodb positron',
+        # attr='Map tiles by CartoDB, under CC BY 3.0. Data by OpenStreetMap, under ODbL.'
     )
 
     choropleth = folium.Choropleth(
@@ -190,12 +181,11 @@ def create_map(data_map, geojson_data):
         key_on='feature.properties.name',
         fill_color='RdBu',
         fill_opacity=0.7,
-        line_opacity=0.5,  # Thicker boundary lines
-        line_color='lime',  # Boundary color
+        line_opacity=0.5, 
+        line_color='lime',
         legend_name='Student Contribution by Country'
     ).add_to(m)
 
-    # Ensure data is correctly being passed to the Choropleth layer
     for feature in choropleth.geojson.data['features']:
         country_name = feature['properties']['name']
         feature['properties']['Count'] = int(data_map.set_index('Country').loc[country_name]['Count']) if country_name in data_map['Country'].values else 'No data'
@@ -209,9 +199,9 @@ def create_map(data_map, geojson_data):
         labels=True,
         style="""
             background-color: #F0EFEF;
-            border: 2px solid black;
-            border-radius: 3px;
-            box-shadow: 3px;
+            border: 2px solid yellow;
+            border-radius: 6px;
+            box-shadow: 10px;
         """
     )
     choropleth.geojson.add_child(tooltip)
@@ -223,10 +213,10 @@ def create_map(data_map, geojson_data):
             folium.Marker(
                 location=coord,
                 popup=f'Students from {country}',
-                icon=folium.Icon(icon='info-sign', color='blue')
+                icon=folium.Icon(icon='star', color='green')
             ).add_to(m)
 
-    # Add minimap
+    # Minimap qo'shamiz
     minimap = MiniMap(toggle_display=True)
     m.add_child(minimap)
 
@@ -234,55 +224,82 @@ def create_map(data_map, geojson_data):
 
 m = create_map(data_map, geojson_data)
 
-# Display map in an expander
+# Expander orqali mapni chiqaramiz
 with st.expander("View Map", expanded=False):
-    # Save map to an HTML file and display in Streamlit
+    # Xaritani HTLM filega saqlaymiz va streamlitda namoish qilamiz
     map_html = "map.html"
     m.save(map_html)
     with open(map_html, 'r') as f:
         map_html_content = f.read()
-    st.components.v1.html(map_html_content, width=670, height=500)
+    st.components.v1.html(map_html_content, width=980, height=500)
 
+# Heatmap chiqaramiz
 st.header("Heatmap of numeric categories")
 
 plt.figure(figsize=(10, 8))
-sns.heatmap(data.corr(numeric_only=True), cmap='coolwarm', center=0)
+sns.heatmap(data.corr(numeric_only=True), cmap='Spectral', center=0)
 st.pyplot(plt)
 
-# Select numeric columns for PCA
-numeric_cols = filtered_data.select_dtypes(include=['float64', 'int64']).columns
-numeric_data = filtered_data[numeric_cols]
+# Orginal datasetni o'zgaruvchiga yuklab olamiz
+original_data = pd.read_csv('Academic_Success.csv', index_col=0)
 
-# Apply PCA
-pca = PCA(n_components=2)
-pca_result = pca.fit_transform(numeric_data)
-
-# Create a DataFrame for the PCA results
-pca_df = pd.DataFrame(pca_result, columns=['PC1', 'PC2'])
-if 'Target' in filtered_data.columns:
-    pca_df['Target'] = filtered_data['Target'].values
-
-# Placeholder for dropdown or any other UI elements if needed
-if st.button('Show Summary Statistics of Old Data with NaN values vs Cleaned Data'):
-    # Load the original dataset
-    original_data = pd.read_csv('Academic_Success.csv', index_col=0)
-    
-    # Summary statistics for original data
+# Eski tozalanmagan ma'lumotlar va tozalangan ma'lumotlarni solishitiramiz
+if st.button('Summary Statistics of Old Data with NaN values vs Cleaned Data'):
+    # Descriptive statistikalar orginal dataset uchun
     st.header('Summary Statistics: Original Data with NaN Values')
     st.write(original_data.iloc[:1000].describe())
     
-    # Summary statistics for cleaned data
+    # Descriptive statistikalar cleaned dataset uchun 
     st.header('Summary Statistics: Cleaned Data')
     st.write(data.describe())
 
-if st.button('Show correlation of old data vs cleaned data'):
-    # Load the original dataset
-    original_data = pd.read_csv('Academic_Success.csv', index_col=0)
-    
-    # Summary statistics for original data
+    # Piechartlar hosil qilamiz Gender bo'yicha o'zgarishni solishtirish uchun
+    c_1, c_2 = st.columns([3, 3], gap = 'medium')
+
+    with c_1:
+        # Eski dataset uchun gender (NaN valuelari bilan)
+        fig_d_or_e = px.pie(original_data, names='Gender', 
+                            title='Gender with Nan values',
+                            hole = 0.6,
+                            color_discrete_sequence=['yellow', 'green'])
+        fig_d_or_e.update_layout(width=650, height=400) 
+        st.plotly_chart(fig_d_or_e)
+
+    with c_2:
+        # Tozalangan dataset uchun gender 
+        fig_gender = px.pie(data, names='Gender', 
+                            title='Gender',
+                            hole = 0.6,
+                            color_discrete_sequence=['Red', 'Black'])
+        fig_gender.update_layout(width=650, height=400)
+        st.plotly_chart(fig_gender)
+
+    st.write('### Bu yerda Nan qiymatlardan tozalanmagan datasetdagi talablarning jinsi va Keyingi ya\'ni tozalangan datasetdagi talabalarning jinsi bo\'yicha solishtiruvchi piechartlar chiqarildi')
+
+
+if st.button('Correlation of old data vs cleaned data'):
+    # Original dataset korrelatsiyasi
     st.header('Correlation: Original Data with NaN Values')
     st.write(original_data.iloc[:1000].select_dtypes('number').corr())
     
-    # Summary statistics for cleaned data
+    # Tozalangan dataset korrelatsiyasi
     st.header('Correlation: Cleaned Data')
     st.write(data.select_dtypes('number').corr())
+
+    cmp_1, cmp_2 = st.columns([3, 3], gap = 'medium')
+    with cmp_1:
+        st.header("Heatmap eski dataset uchun")
+
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(original_data.iloc[:10000].corr(numeric_only=True), cmap='Spectral', center=0)
+        st.pyplot(plt)
+
+    with cmp_2:
+        st.header("Heatmap tozalangan dataset uchun")
+
+        plt.figure(figsize=(10, 8))
+        sns.heatmap(data.corr(numeric_only=True), cmap='Spectral', center=0)
+        st.pyplot(plt)
+
+    st.write('### Bu yerda Nan qiymatlardan tozalanmagan dataset va keyingi ya\'ni tozalangan datasetlarning korrelatsiyalari chiqarildi')
+    

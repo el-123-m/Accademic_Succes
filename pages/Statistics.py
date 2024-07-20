@@ -1,10 +1,12 @@
-import pandas as pd
+# import pandas as pd
 import streamlit as st
 import plotly.express as px
+import seaborn as sns
+import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler, MaxAbsScaler, QuantileTransformer, Normalizer
 from Project import data
 
-# Function to apply scaling
+# Funksiyalar skaling uchun
 def apply_scaling(data, scaling_method):
     numeric_cols = data.select_dtypes(include=['float64', 'int64']).columns
     scaler = None
@@ -26,24 +28,24 @@ def apply_scaling(data, scaling_method):
         data[numeric_cols] = scaler.fit_transform(data[numeric_cols])
     return data
 
-# Function to generate visualizations
+# Funksiya scalingni generatsiya qilish uchun
 def generate_visualizations(data):
     st.sidebar.header('Visualization Settings')
 
-    # Scaling method
+    # Scaling usullari
     scaling_method = st.sidebar.selectbox(
         'Select Scaling Method:',
         ['None', 'Standard Scaling', 'Min-Max Scaling', 'Robust Scaling', 'MaxAbs Scaling', 'Quantile Transformation', 'Normalizer']
     )
 
-    # Apply scaling if selected
+    # Scaling usuli jonatilgan murojat qilinsin
     if scaling_method != 'None':
         data = apply_scaling(data, scaling_method)
 
-    # Visualization type
+    # Visualization turi
     visualization_type = st.sidebar.radio(
         'Select Visualization Type:',
-        ['Summary Statistics', 'Histogram', 'Scatter Plot', 'Box Plot', 'Pie/Donut Chart']
+        ['Summary Statistics', 'Histogram', 'Scatter Plot', 'Box Plot', 'Pie/Donut Chart', 'Boxen Plot', 'Violin Plot']
     )
 
     if visualization_type == 'Summary Statistics':
@@ -84,5 +86,27 @@ def generate_visualizations(data):
         st.title(f'Donut Chart: {pie_column}')
         fig = px.pie(data, names=pie_column, title=f'Donut Chart: {pie_column}', hole=pie_hole)
         st.plotly_chart(fig)
+
+    elif visualization_type == 'Boxen Plot':
+        st.sidebar.subheader('Boxen Plot Settings')
+        boxen_x = st.sidebar.radio('Select X axis for boxen plot:', data.select_dtypes(include=['object']).columns)
+        boxen_y = st.sidebar.radio('Select Y axis for boxen plot:', data.select_dtypes('number').columns)
+        
+        st.title(f'Boxen Plot: {boxen_y} by {boxen_x}')
+        fig, ax = plt.subplots()
+        sns.boxenplot(x=boxen_x, y=boxen_y, data=data, ax=ax, hue = boxen_x)
+        plt.xticks(rotation=90)
+        st.pyplot(fig)
+
+    elif visualization_type == 'Violin Plot':
+        st.sidebar.subheader('Violin Plot Settings')
+        violin_x = st.sidebar.radio('Select X axis for violin plot:', data.select_dtypes(include=['object']).columns)
+        violin_y = st.sidebar.radio('Select Y axis for violin plot:', data.select_dtypes(include=['float64', 'int64']).columns)
+        
+        st.title(f'Violin Plot: {violin_y} by {violin_x}')
+        fig, ax = plt.subplots()
+        sns.violinplot(x=violin_x, y=violin_y, data=data, ax=ax, hue = violin_x)
+        plt.xticks(rotation=90)
+        st.pyplot(fig)
 
 generate_visualizations(data)
