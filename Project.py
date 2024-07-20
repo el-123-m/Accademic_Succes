@@ -225,7 +225,7 @@ def create_map(data_map, geojson_data):
 m = create_map(data_map, geojson_data)
 
 # Expander orqali mapni chiqaramiz
-with st.expander("View Map", expanded=False):
+with st.expander("View Map :eyes:", expanded=False):
     # Xaritani HTLM filega saqlaymiz va streamlitda namoish qilamiz
     map_html = "map.html"
     m.save(map_html)
@@ -244,7 +244,7 @@ st.pyplot(plt)
 original_data = pd.read_csv('Academic_Success.csv', index_col=0)
 
 # Eski tozalanmagan ma'lumotlar va tozalangan ma'lumotlarni solishitiramiz
-if st.button('Summary statistics of old data with NaN values vs cleaned cata'):
+if st.button('(D) Statistics of old data with NaN values vs cleaned cata :large_blue_diamond:'):
     # Descriptive statistikalar orginal dataset uchun
     st.header('Summary Statistics: Original Data with NaN Values')
     st.write(original_data.describe())
@@ -277,7 +277,7 @@ if st.button('Summary statistics of old data with NaN values vs cleaned cata'):
     st.write('### Bu yerda Nan qiymatlardan tozalanmagan datasetdagi talablarning jinsi va Keyingi ya\'ni tozalangan datasetdagi talabalarning jinsi bo\'yicha solishtiruvchi piechartlar chiqarildi')
 
 
-if st.button('Correlation of old data with NaN values vs cleaned data'):
+if st.button('Correlation of old data with NaN values vs cleaned data :large_orange_diamond:'):
     # Original dataset korrelatsiyasi
     st.header('Correlation: Original Data with NaN Values')
     st.write(original_data.select_dtypes('number').corr())
