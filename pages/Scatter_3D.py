@@ -1,6 +1,6 @@
 import streamlit as st
 import plotly.express as px
-from Project1 import data
+from Main_Menu import data
 
 st.title('3D Scatter Plot of Student Data')
 

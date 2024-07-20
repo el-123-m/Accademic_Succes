@@ -4,7 +4,7 @@ import plotly.express as px
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.preprocessing import StandardScaler, MinMaxScaler, RobustScaler, MaxAbsScaler, QuantileTransformer, Normalizer
-from Project1 import data
+from Main_Menu import data
 
 # Funksiyalar skaling uchun
 def apply_scaling(data, scaling_method):
