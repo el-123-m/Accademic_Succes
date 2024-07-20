@@ -244,10 +244,10 @@ st.pyplot(plt)
 original_data = pd.read_csv('Academic_Success.csv', index_col=0)
 
 # Eski tozalanmagan ma'lumotlar va tozalangan ma'lumotlarni solishitiramiz
-if st.button('Summary Statistics of Old Data with NaN values vs Cleaned Data'):
+if st.button('Summary statistics of old data with NaN values vs cleaned cata'):
     # Descriptive statistikalar orginal dataset uchun
     st.header('Summary Statistics: Original Data with NaN Values')
-    st.write(original_data.iloc[:1000].describe())
+    st.write(original_data.describe())
     
     # Descriptive statistikalar cleaned dataset uchun 
     st.header('Summary Statistics: Cleaned Data')
@@ -277,10 +277,10 @@ if st.button('Summary Statistics of Old Data with NaN values vs Cleaned Data'):
     st.write('### Bu yerda Nan qiymatlardan tozalanmagan datasetdagi talablarning jinsi va Keyingi ya\'ni tozalangan datasetdagi talabalarning jinsi bo\'yicha solishtiruvchi piechartlar chiqarildi')
 
 
-if st.button('Correlation of old data vs cleaned data'):
+if st.button('Correlation of old data with NaN values vs cleaned data'):
     # Original dataset korrelatsiyasi
     st.header('Correlation: Original Data with NaN Values')
-    st.write(original_data.iloc[:1000].select_dtypes('number').corr())
+    st.write(original_data.select_dtypes('number').corr())
     
     # Tozalangan dataset korrelatsiyasi
     st.header('Correlation: Cleaned Data')
@@ -291,7 +291,7 @@ if st.button('Correlation of old data vs cleaned data'):
         st.header("Heatmap eski dataset uchun")
 
         plt.figure(figsize=(10, 8))
-        sns.heatmap(original_data.iloc[:10000].corr(numeric_only=True), cmap='Spectral', center=0)
+        sns.heatmap(original_data.corr(numeric_only=True), cmap='Spectral', center=0)
         st.pyplot(plt)
 
     with cmp_2:
