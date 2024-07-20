@@ -295,7 +295,7 @@ if st.button('Correlation of old data vs cleaned data'):
         st.pyplot(plt)
 
     with cmp_2:
-        st.header("Heatmap tozalangan dataset uchun")
+        st.header("Heatmap tozalangan dataset")
 
         plt.figure(figsize=(10, 8))
         sns.heatmap(data.corr(numeric_only=True), cmap='Spectral', center=0)
