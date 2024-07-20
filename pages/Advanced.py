@@ -3,7 +3,7 @@ import seaborn as sns
 import streamlit as st
 from sklearn.decomposition import PCA
 import plotly.express as px
-from Project import data
+from Project1 import data
 
 # Define visualization functions
 def plot_jointplot(data, x, y):
