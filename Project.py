@@ -231,7 +231,7 @@ with st.expander("View Map", expanded=False):
     m.save(map_html)
     with open(map_html, 'r') as f:
         map_html_content = f.read()
-    st.components.v1.html(map_html_content, width=980, height=500)
+    st.components.v1.html(map_html_content, width=920, height=500)
 
 # Heatmap chiqaramiz
 st.header("Heatmap of numeric categories")
