@@ -48,6 +48,10 @@ def generate_visualizations(data):
         ['Summary Statistics', 'Histogram', 'Scatter Plot', 'Box Plot', 'Pie/Donut Chart', 'Boxen Plot', 'Violin Plot', 'Count Plot']
     )
 
+    # Visualization size
+    width = st.sidebar.slider('Select plot width:', 400, 1200, 800)
+    height = st.sidebar.slider('Select plot height:', 300, 800, 400)
+
     if visualization_type == 'Summary Statistics':
         st.title('Summary Statistics')
         st.write(data.describe())
@@ -57,7 +61,7 @@ def generate_visualizations(data):
         hist_column = st.sidebar.radio('Select column for histogram:', data.select_dtypes(include=['float64', 'int64']).columns)
         
         st.title(f'Distribution of {hist_column}')
-        fig = px.histogram(data, x=hist_column, title=f'Distribution of {hist_column}')
+        fig = px.histogram(data, x=hist_column, title=f'Distribution of {hist_column}', width=width, height=height)
         st.plotly_chart(fig)
 
     elif visualization_type == 'Scatter Plot':
@@ -66,7 +70,7 @@ def generate_visualizations(data):
         scatter_y = st.sidebar.radio('Select Y axis for scatter plot:', data.select_dtypes(include=['float64', 'int64']).columns)
         
         st.title(f'Scatter Plot: {scatter_x} vs {scatter_y}')
-        fig = px.scatter(data, x=scatter_x, y=scatter_y, title=f'Scatter Plot: {scatter_x} vs {scatter_y}')
+        fig = px.scatter(data, x=scatter_x, y=scatter_y, title=f'Scatter Plot: {scatter_x} vs {scatter_y}', width=width, height=height)
         st.plotly_chart(fig)
 
     elif visualization_type == 'Box Plot':
@@ -75,7 +79,7 @@ def generate_visualizations(data):
         box_y = st.sidebar.radio('Select Y axis for box plot:', data.select_dtypes(include=['float64', 'int64']).columns)
         
         st.title(f'Box Plot: {box_y} by {box_x}')
-        fig = px.box(data, x=box_x, y=box_y, title=f'Box Plot: {box_y} by {box_x}')
+        fig = px.box(data, x=box_x, y=box_y, title=f'Box Plot: {box_y} by {box_x}', width=width, height=height)
         st.plotly_chart(fig)
 
     elif visualization_type == 'Pie/Donut Chart':
@@ -84,7 +88,7 @@ def generate_visualizations(data):
         pie_hole = st.sidebar.slider('Select hole size for donut chart:', 0.0, 0.5, 0.4)
         
         st.title(f'Donut Chart: {pie_column}')
-        fig = px.pie(data, names=pie_column, title=f'Donut Chart: {pie_column}', hole=pie_hole)
+        fig = px.pie(data, names=pie_column, title=f'Donut Chart: {pie_column}', hole=pie_hole, width=width, height=height)
         st.plotly_chart(fig)
 
     elif visualization_type == 'Boxen Plot':
@@ -93,7 +97,7 @@ def generate_visualizations(data):
         boxen_y = st.sidebar.radio('Select Y axis for boxen plot:', data.select_dtypes('number').columns)
         
         st.title(f'Boxen Plot: {boxen_y} by {boxen_x}')
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(width/100, height/100))
         sns.boxenplot(x=boxen_x, y=boxen_y, data=data, ax=ax, hue = boxen_x)
         plt.xticks(rotation=90)
         st.pyplot(fig)
@@ -104,7 +108,7 @@ def generate_visualizations(data):
         violin_y = st.sidebar.radio('Select Y axis for violin plot:', data.select_dtypes(include=['float64', 'int64']).columns)
         
         st.title(f'Violin Plot: {violin_y} by {violin_x}')
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(width/100, height/100))
         sns.violinplot(x=violin_x, y=violin_y, data=data, ax=ax, hue = violin_x)
         plt.xticks(rotation=90)
         st.pyplot(fig)
@@ -114,7 +118,7 @@ def generate_visualizations(data):
         bar_x = st.sidebar.radio('Select X axis for bar plot:', data.select_dtypes(include=['object']).columns)
         
         st.title(f'Count Plot: by {bar_x}')
-        fig, ax = plt.subplots()
+        fig, ax = plt.subplots(figsize=(width/100, height/100))
         sns.countplot(x=bar_x, data=data, ax=ax, hue = bar_x)
         plt.xticks(rotation=90)
         st.pyplot(fig)
