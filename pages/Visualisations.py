@@ -45,7 +45,7 @@ def generate_visualizations(data):
     # Visualization turi
     visualization_type = st.sidebar.radio(
         'Select Visualization Type:',
-        ['Summary Statistics', 'Histogram', 'Scatter Plot', 'Box Plot', 'Pie/Donut Chart', 'Boxen Plot', 'Violin Plot', 'Bar Plot']
+        ['Summary Statistics', 'Histogram', 'Scatter Plot', 'Box Plot', 'Pie/Donut Chart', 'Boxen Plot', 'Violin Plot', 'Count Plot']
     )
 
     if visualization_type == 'Summary Statistics':
@@ -94,7 +94,7 @@ def generate_visualizations(data):
         
         st.title(f'Boxen Plot: {boxen_y} by {boxen_x}')
         fig, ax = plt.subplots()
-        sns.boxenplot(x=boxen_x, y=boxen_y, data=data, ax=ax)
+        sns.boxenplot(x=boxen_x, y=boxen_y, data=data, ax=ax, hue = boxen_x)
         plt.xticks(rotation=90)
         st.pyplot(fig)
 
@@ -105,18 +105,17 @@ def generate_visualizations(data):
         
         st.title(f'Violin Plot: {violin_y} by {violin_x}')
         fig, ax = plt.subplots()
-        sns.violinplot(x=violin_x, y=violin_y, data=data, ax=ax)
+        sns.violinplot(x=violin_x, y=violin_y, data=data, ax=ax, hue = violin_x)
         plt.xticks(rotation=90)
         st.pyplot(fig)
 
-    elif visualization_type == 'Bar Plot':
+    elif visualization_type == 'Count Plot':
         st.sidebar.subheader('Bar Plot Settings')
         bar_x = st.sidebar.radio('Select X axis for bar plot:', data.select_dtypes(include=['object']).columns)
-        bar_y = st.sidebar.radio('Select Y axis for bar plot:', data.select_dtypes(include=['float64', 'int64']).columns)
         
-        st.title(f'Bar Plot: {bar_y} by {bar_x}')
+        st.title(f'Count Plot: by {bar_x}')
         fig, ax = plt.subplots()
-        sns.barplot(x=bar_x, y=bar_y, data=data, ax=ax)
+        sns.countplot(x=bar_x, data=data, ax=ax, hue = bar_x)
         plt.xticks(rotation=90)
         st.pyplot(fig)
 
