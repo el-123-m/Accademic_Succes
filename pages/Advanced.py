@@ -5,7 +5,6 @@ from sklearn.decomposition import PCA
 import plotly.express as px
 from Main_Menu import data
 
-# Define visualization functions
 def plot_jointplot(data, x, y, width, height):
     fig = sns.jointplot(x=x, y=y, data=data, kind="hex", height=height/100)
     st.pyplot(fig)
@@ -29,17 +28,14 @@ def plot_pca(data, width, height):
 
 st.sidebar.header('Visualization Settings')
 
-# Visualization size
 width = st.sidebar.slider('Select plot width (pixels):', 400, 1600, 800)
 height = st.sidebar.slider('Select plot height (pixels):', 300, 1200, 600)
 
-# Visualization type
 visualization_type = st.sidebar.selectbox(
     'Select Visualization Type:',
     ['Joint Plot', 'Pair Plot', 'Advanced Joint Plot', 'PCA']
 )
 
-# Select columns
 if visualization_type == 'Joint Plot':
     x_col = st.sidebar.selectbox('Select X axis:', data.select_dtypes(include=['float64', 'int64']).columns)
     y_col = st.sidebar.selectbox('Select Y axis:', data.select_dtypes(include=['float64', 'int64']).columns)
