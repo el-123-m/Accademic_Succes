@@ -287,7 +287,7 @@ if st.button('Correlation of old data with NaN values vs cleaned data :large_ora
     st.header('Correlation: Cleaned Data')
     st.write(data.select_dtypes('number').corr())
 
-    cmp_1, cmp_2 = st.columns([3, 3], gap = 'medium')
+    cmp_1, cmp_2 = st.columns([3, 3], gap = 'small')
     with cmp_1:
         st.header("Heatmap eski dataset uchun")
 
