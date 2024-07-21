@@ -68,4 +68,5 @@ Agar sizda biron bir savol yoki taklif bo'lsa, iltimos quyidagi manzilga murojaa
 - Email: sardorallanazarov2@gmail.com
 - GitHub Issues: [Issues bo'limi](https://github.com/Allanazarov-DS/Accademic_Success/issues)
 - Telegram: [Sardor_Allanazarov](https://t.me/Sardor_Allanazarov)
+
 Loyihaga qiziqishingiz uchun rahmat!
