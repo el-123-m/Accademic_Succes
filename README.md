@@ -66,5 +66,6 @@ Ushbu loyiha MIT litsenziyasi ostida tarqatiladi. Batafsil ma'lumot uchun [LICEN
 
 Agar sizda biron bir savol yoki taklif bo'lsa, iltimos quyidagi manzilga murojaat qiling:
 - Email: sardorallanazarov2@gmail.com
-
+- GitHub Issues: [Issues bo'limi](https://github.com/Allanazarov-DS/Accademic_Success/issues)
+- Telegram: [Sardor_Allanazarov](https://t.me/Sardor_Allanazarov)
 Loyihaga qiziqishingiz uchun rahmat!
